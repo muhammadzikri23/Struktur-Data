@@ -1,0 +1,46 @@
+```java
+
+public class TransposeMatriks { // Mendeklarasikan kelas bernama TransposeMatriks
+    public static void main(String[] args) { // Metode utama, titik awal program
+        int[][] matriks = { // Mendeklarasikan dan menginisialisasi matriks 2D
+            {1, 2, 3}, 
+            {4, 5, 6}, 
+            {8, 9, 10}
+        };
+
+        // Menampilkan matriks asli
+        System.out.println("Matriks asli:");
+        cetakMatriks(matriks); // Memanggil metode untuk mencetak matriks asli
+
+        // Menghitung transpose matriks
+        int[][] transpose = transposeMatriks(matriks); // Menghitung transpose matriks dan menyimpannya di variabel 'transpose'
+
+        // Menampilkan matriks transpose
+        System.out.println("Matriks transpose:");
+        cetakMatriks(transpose); // Memanggil metode untuk mencetak matriks transpose
+    }
+
+    public static int[][] transposeMatriks(int[][] matriks) { // Metode untuk menghitung transpose dari matriks
+        int baris = matriks.length; // Mengambil jumlah baris dari matriks asli
+        int kolom = matriks[0].length; // Mengambil jumlah kolom dari matriks asli
+        int[][] transpose = new int[kolom][baris]; // Mendeklarasikan matriks baru untuk menyimpan hasil transpose
+
+        for (int i = 0; i < baris; i++) { // Loop melalui setiap baris matriks asli
+            for (int j = 0; j < kolom; j++) { // Loop melalui setiap kolom matriks asli
+                transpose[j][i] = matriks[i][j]; // Menukar elemen (i, j) dengan elemen (j, i)
+            }
+        }
+
+        return transpose; // Mengembalikan hasil transpose matriks
+    }
+    public static void cetakMatriks(int[][] matriks) { // Metode untuk mencetak matriks ke layar
+        for (int[] baris : matriks) { // Loop melalui setiap baris matriks
+            for (int elemen : baris) { // Loop melalui setiap elemen dalam baris
+                System.out.print(elemen + " "); // Mencetak elemen diikuti oleh spasi
+            }
+            System.out.println(); // Mencetak baris baru setelah setiap baris matriks
+        }
+    }
+}
+        
+        
