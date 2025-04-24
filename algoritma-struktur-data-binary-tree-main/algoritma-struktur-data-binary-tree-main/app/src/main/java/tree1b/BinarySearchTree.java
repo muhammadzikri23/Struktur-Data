@@ -1,150 +1,132 @@
 package tree1b;
 
-// Kelas utama untuk Binary Search Tree (BST)
 public class BinarySearchTree {
-
-    // =========================
-    // Kelas internal Node
-    // Setiap node menyimpan satu angka (key), dan punya anak kiri dan kanan
+    // Node class for the tree
     class Node {
-        int key;          // Angka yang disimpan di node ini
-        Node left, right; // Pointer ke anak kiri dan kanan
+        int key;
+        Node left, right;
 
-        // Konstruktor Node: membuat node baru dengan angka yang diberikan
         public Node(int item) {
             key = item;
             left = right = null;
         }
     }
 
-    // Akar (root) dari BST
+    // Root of BST
     Node root;
 
-    // Konstruktor BinarySearchTree: awalnya pohon kosong
+    // Constructor
     public BinarySearchTree() {
         root = null;
     }
 
-    // =========================
-    // Fungsi untuk menambahkan (insert) angka ke BST
+    // Insert a new key
     public void insert(int key) {
-        root = insertRec(root, key); // Panggil fungsi rekursif
+        root = insertRec(root, key);
     }
 
-    // Fungsi rekursif untuk menyisipkan angka ke posisi yang benar
+    // Recursive insert function
     private Node insertRec(Node root, int key) {
-        // Jika posisi kosong (null), buat node baru di sini
+        // If the tree is empty, return a new node
         if (root == null) {
             root = new Node(key);
             return root;
         }
 
-        // Jika key lebih kecil, masukkan ke kiri
+        // Otherwise, recur down the tree
         if (key < root.key)
             root.left = insertRec(root.left, key);
-        // Jika key lebih besar, masukkan ke kanan
         else if (key > root.key)
             root.right = insertRec(root.right, key);
 
-        // Kembalikan node saat ini (tidak berubah)
+        // Return the unchanged node pointer
         return root;
     }
 
-    // =========================
-    // Fungsi untuk traversal inorder (kiri - induk - kanan)
+    // Inorder traversal
     public void inorder() {
         inorderRec(root);
         System.out.println();
     }
 
-    // Fungsi rekursif untuk traversal inorder
+    // Recursive inorder traversal function
     private void inorderRec(Node root) {
         if (root != null) {
-            inorderRec(root.left);              // Kunjungi kiri
-            System.out.print(root.key + " ");   // Cetak node ini
-            inorderRec(root.right);             // Kunjungi kanan
+            inorderRec(root.left);
+            System.out.print(root.key + " ");
+            inorderRec(root.right);
         }
     }
 
-    // =========================
-    // Fungsi untuk traversal postorder (kiri - kanan - induk)
+    // Postorder traversal: left, right, root
     public void postorder() {
         postorderRec(root);
         System.out.println();
     }
 
-    // Fungsi rekursif postorder
     private void postorderRec(Node root) {
         if (root != null) {
-            postorderRec(root.left);            // Kunjungi kiri
-            postorderRec(root.right);           // Kunjungi kanan
-            System.out.print(root.key + " ");   // Cetak node ini
+            postorderRec(root.left); // 1. Go left
+            postorderRec(root.right); // 2. Go right
+            System.out.print(root.key + " "); // 3. Print after children
         }
     }
 
-    // =========================
-    // Fungsi untuk mencari angka di BST
     public boolean search(int key) {
-        return searchRec(root, key); // Panggil fungsi rekursif
+        return searchRec(root, key);
     }
 
-    // Fungsi rekursif pencarian
+    // Recursive search function
     private boolean searchRec(Node root, int key) {
-        // Jika tidak ditemukan
+        // Base Cases: root is null or key is present at root
         if (root == null)
             return false;
-        // Jika ditemukan
         if (root.key == key)
             return true;
 
-        // Jika key lebih kecil, cari di kiri
+        // Key is greater than root's key
         if (root.key > key)
             return searchRec(root.left, key);
 
-        // Jika key lebih besar, cari di kanan
+        // Key is less than root's key
         return searchRec(root.right, key);
     }
 
-    // =========================
-    // Fungsi untuk menghapus (delete) node dari BST
+    // Delete a key
     public void delete(int key) {
-        root = deleteRec(root, key); // Panggil fungsi rekursif
+        root = deleteRec(root, key);
     }
 
-    // Fungsi rekursif penghapusan
+    // Recursive delete function
     private Node deleteRec(Node root, int key) {
-        // Jika node kosong, langsung kembali
+        // Base case: If the tree is empty
         if (root == null)
             return root;
 
-        // Jika key lebih kecil, cari di kiri
+        // Otherwise, recur down the tree
         if (key < root.key)
             root.left = deleteRec(root.left, key);
-        // Jika key lebih besar, cari di kanan
         else if (key > root.key)
             root.right = deleteRec(root.right, key);
         else {
-            // Jika hanya punya 1 anak atau tidak punya anak
+            // Node with only one child or no child
             if (root.left == null)
                 return root.right;
             else if (root.right == null)
                 return root.left;
 
-            // Jika punya 2 anak:
-            // Ambil nilai terkecil dari sub-pohon kanan (inorder successor)
+            // Node with two children: Get the inorder successor
             root.key = minValue(root.right);
 
-            // Hapus node pengganti yang dipakai tadi
+            // Delete the inorder successor
             root.right = deleteRec(root.right, root.key);
         }
 
         return root;
     }
 
-    // Fungsi untuk menemukan nilai terkecil dalam sebuah subtree
     private int minValue(Node root) {
         int minv = root.key;
-        // Terus ke kiri sampai tidak ada anak kiri lagi
         while (root.left != null) {
             minv = root.left.key;
             root = root.left;
